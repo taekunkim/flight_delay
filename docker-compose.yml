@@ -10,8 +10,27 @@ services:
       - ./config/.env:/usr/src/app/.env
       - ./data:/usr/src/app/output # Mounts the data folder in ROOT to container dir; enabling Python to save output outside of the container
       - ./tests:/usr/src/app/tests
+    env_file:
+      - ./config/.env
     working_dir: /usr/src/app/scripts # dir within the container, in which Python will be running
     environment:
       - PYTHONPATH=/usr/src/app
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
     command: >
-      sh -c "pip install --no-cache-dir -r ../requirements.txt && python extract_flight_arrival_data.py" # terminal command to run when starting the container
+      sh -c "pip install --no-cache-dir -r ../requirements.txt && sleep infinity"   
+    # python extract_flight_arrival_data.py" # terminal command to run when starting the container
+
+  postgres:
+    image: postgres:15
+    container_name: flight_pg
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./config/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
