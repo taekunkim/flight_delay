@@ -1,7 +1,7 @@
 
 import pytest
 from unittest.mock import patch, MagicMock
-from scripts.extract_flight_arrival_data import get_arrival_info
+from scripts.get_flight_arrival_data import get_flight_arrival_data
 
 # Sample API response based on the user's data
 sample_response = [
@@ -66,7 +66,7 @@ def test_get_arrival_info_returns_sample_data(mock_get):
     mock_get.return_value = mock_response
 
     # Act
-    result = get_arrival_info(
+    result = get_flight_arrival_data(
         api_key="FAKE_KEY",
         arrival_airport="ICN",
         airline_code="OZ",
