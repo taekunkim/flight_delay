@@ -34,19 +34,44 @@ def dump_data(data: dict, output_dir: str, base_filename: str) -> None:
         logger.error(f"Failed to save file: {e}")
 
 # ───────────────────────────────
-# Load data to DB
+# Insert data to DB
 # ───────────────────────────────
-def insert_data_to_db(data: list[dict]):
+def insert_data_to_db(table: object, data: list[dict], upsert: bool=False):
     """
     Inserts a list of flight arrival dictionaries into the database.
     """
+    from sqlalchemy.inspection import inspect
+    from sqlalchemy.dialects.postgresql import insert
+
     session: Session = SessionLocal()
 
+    cols = [col.name for col in inspect(table).c]
+    pk_cols = [pk.name for pk in inspect(table).primary_key]
+    updatable_columns = [col for col in cols if col not in pk_cols]
+
     if len(data) > 0:
-        logger.info(f"Inserting {len(data)} records of data to DB.")
-        session.add_all(data)
-        session.commit()
-        logger.info(f"Inserted data.")
+        try:
+            stmt = insert(table).values(data)
+            if upsert:
+                stmt = stmt.on_conflict_do_update(
+                    index_elements=pk_cols,
+                    set_={col: getattr(stmt.excluded, col) for col in updatable_columns}
+                )
+
+            session.execute(stmt)
+            session.commit()
+
+            if not upsert: 
+                print(f"Inserted {len(data)} records.")
+            if upsert: 
+                print(f"Upserted {len(data)} records.")
+
+        except Exception as e:
+            logger.warning("Failed to upsert records: %s", e, exc_info=True)
+
+        finally:
+            session.close()
+
     else:
         logger.warning("No valid records to insert.")
 
