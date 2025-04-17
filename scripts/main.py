@@ -38,17 +38,9 @@ def main():
     # ───────────────────────────────
     # Fetch API Data
     # ───────────────────────────────
-    # logger.info("Fetching Flight Arrival data via API...")
-    # arrival_data = get_flight_arrival_data(API_KEY, ARRIVAL_AIRPORT, AIRLINE_CODE, FLIGHT_NUMBER, DATE_FROM, DATE_TO)
-    # logger.info("Finished fetching Flight Arrival data via API.")
-
-    arrival_data = [{
-        "airline_iata_code": "oz",
-        "flight_number": "6934",
-        "actual_arrival": "2025-03-01 08:51:00",
-        "departure_delay": "5000",
-        "scheduled_arrival": "2025-03-01 09:05:00"
-    }]
+    logger.info("Fetching Flight Arrival data via API...")
+    arrival_data = get_flight_arrival_data(API_KEY, ARRIVAL_AIRPORT, AIRLINE_CODE, FLIGHT_NUMBER, DATE_FROM, DATE_TO)
+    logger.info("Finished fetching Flight Arrival data via API.")
 
     # insert data to db
     insert_data_to_db(FlightArrival, arrival_data, upsert=True)
