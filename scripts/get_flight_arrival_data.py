@@ -120,14 +120,13 @@ def get_flight_arrival_data(
     skip_counter = 0 # number of records skipped while parsing
     for each in raw_data:
         try:
-            clean_each = FlightArrival(
-                airline_iata_code=each.get("airline").get("iataCode"),
-                flight_number=each.get("flight").get("number"),
-                scheduled_arrival=datetime.fromisoformat(each.get("arrival").get("scheduledTime").replace("t", "T")),
-                actual_arrival=datetime.fromisoformat(each.get("arrival").get("actualTime").replace("t", "T")),
-                departure_delay=each.get("departure").get("delay"),
-                ingested_at=datetime.utcnow()
-            )
+            clean_each = {
+                "airline_iata_code": each.get("airline").get("iataCode"),
+                "flight_number": each.get("flight").get("number"),
+                "scheduled_arrival": datetime.fromisoformat(each.get("arrival").get("scheduledTime").replace("t", "T")),
+                "actual_arrival": datetime.fromisoformat(each.get("arrival").get("actualTime").replace("t", "T")),
+                "departure_delay": each.get("departure").get("delay"),
+            }
             clean_data.append(clean_each)
 
         except Exception as e:

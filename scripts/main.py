@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 from scripts.logger import logger
 from scripts.utils import insert_data_to_db
+from scripts.models.flight_arrivals import FlightArrival
 from scripts.get_flight_arrival_data import get_flight_arrival_data
 
 # ───────────────────────────────
@@ -37,12 +38,20 @@ def main():
     # ───────────────────────────────
     # Fetch API Data
     # ───────────────────────────────
-    logger.info("Fetching Flight Arrival data via API...")
-    arrival_data = get_flight_arrival_data(API_KEY, ARRIVAL_AIRPORT, AIRLINE_CODE, FLIGHT_NUMBER, DATE_FROM, DATE_TO)
-    logger.info("Finished fetching Flight Arrival data via API.")
+    # logger.info("Fetching Flight Arrival data via API...")
+    # arrival_data = get_flight_arrival_data(API_KEY, ARRIVAL_AIRPORT, AIRLINE_CODE, FLIGHT_NUMBER, DATE_FROM, DATE_TO)
+    # logger.info("Finished fetching Flight Arrival data via API.")
+
+    arrival_data = [{
+        "airline_iata_code": "oz",
+        "flight_number": "6934",
+        "actual_arrival": "2025-03-01 08:51:00",
+        "departure_delay": "5000",
+        "scheduled_arrival": "2025-03-01 09:05:00"
+    }]
 
     # insert data to db
-    insert_data_to_db(arrival_data)
+    insert_data_to_db(FlightArrival, arrival_data, upsert=True)
 
     main_func_duration = round(time() - main_func_start_time, 2)
     logger.info(f"Main script completed in {main_func_duration} seconds.")
