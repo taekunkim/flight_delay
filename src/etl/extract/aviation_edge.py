@@ -1,9 +1,8 @@
 import os
 import requests
 
-from scripts.logger import logger
-from scripts.utils import dump_data
-from scripts.models.flight_arrivals import FlightArrival
+from src.utils.logger import logger
+from src.utils.helper import dump_data
 
 from datetime import datetime
 from dotenv import load_dotenv
@@ -62,7 +61,6 @@ def get_flight_arrival_data(
         dict: Parsed JSON response from the API.
     """
     
-
     # ───────────────────────────────
     # Load raw data
     # ───────────────────────────────

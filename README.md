@@ -1,6 +1,6 @@
 # Flight Insight
 ##### A Real-Time Flight Data Engineering Pipeline
-Collect and display history of flight fares using the SkyScanner API
+Collect and display history of flight arrival data using Aviation-Edge API
 
 An **end-to-end data engineering project**.
 
@@ -14,9 +14,6 @@ You will:
 - Create a repeatable, automated data pipeline
 - Include monitoring, testing, and documentation
 - Deliver a mini dashboard or API
-
----
-
 
 
 ### 🔍 Use Case:

@@ -1,7 +1,6 @@
-
 import pytest
 from unittest.mock import patch, MagicMock
-from scripts.get_flight_arrival_data import get_flight_arrival_data
+from src.etl.extract.get_flight_arrival_data import get_flight_arrival_data
 
 # Sample API response based on the user's data
 sample_response = [
@@ -56,7 +55,7 @@ sample_response = [
     }
 ]
 
-@patch("scripts.extract_flight_arrival_data.requests.get")
+@patch("src.extract.get_flight_arrival_data.requests.get")
 def test_get_arrival_info_returns_sample_data(mock_get):
     # Arrange
     mock_response = MagicMock()

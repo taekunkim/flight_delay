@@ -1,11 +1,11 @@
 import os
 import json
 
-from scripts.db import SessionLocal
-
 from datetime import datetime 
-from scripts.logger import logger
 from sqlalchemy.orm import Session
+
+from src.utils.logger import logger
+from src.utils.db import SessionLocal
 
 # ───────────────────────────────
 # Logging Configuration
