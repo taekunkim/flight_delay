@@ -5,18 +5,17 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./scripts:/usr/src/app/scripts # Mounts the scripts folder in ROOT to container dir; enabling Python to run scripts stored outside of the container
+      - .:/usr/src/app
+      - ./src:/usr/src/app/src # Mounts the src folder in ROOT to container dir; enabling Python to run src stored outside of the container
       - ./config/requirements.txt:/usr/src/app/requirements.txt # Mounts the requirements.txt file in ROOT to container dir; enabling Python to pip install
       - ./config/.env:/usr/src/app/.env
       - ./data:/usr/src/app/output # Mounts the data folder in ROOT to container dir; enabling Python to save output outside of the container
       - ./tests:/usr/src/app/tests
     env_file:
       - ./config/.env
-    working_dir: /usr/src/app/scripts # dir within the container, in which Python will be running
+    working_dir: /usr/src/app/src # dir within the container, in which Python will be running
     environment:
       - PYTHONPATH=/usr/src/app
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
     command: >
       sh -c "pip install --no-cache-dir -r ../requirements.txt && sleep infinity"   
     # python extract_flight_arrival_data.py" # terminal command to run when starting the container

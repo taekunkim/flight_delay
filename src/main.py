@@ -3,10 +3,10 @@ import os
 from time import time
 from dotenv import load_dotenv
 
-from scripts.logger import logger
-from scripts.utils import insert_data_to_db
-from scripts.models.flight_arrivals import FlightArrival
-from scripts.get_flight_arrival_data import get_flight_arrival_data
+from src.utils.logger import logger
+from src.utils.helper import insert_data_to_db
+from src.db.models.flight_arrivals import FlightArrival
+from src.etl.extract.aviation_edge import get_flight_arrival_data
 
 # ───────────────────────────────
 # Logging Configuration
