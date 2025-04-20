@@ -1,4 +1,3 @@
-import os
 import json
 
 from datetime import datetime 
@@ -15,23 +14,24 @@ logger = logger
 # ───────────────────────────────
 # Save JSON Output
 # ───────────────────────────────
-def dump_data(data: dict, output_dir: str, base_filename: str) -> None:
+def dump_data(data: dict, filepath: str) -> None:
     """
     Saves json/dict data to local file.
 
     Args:
         data (dict): data to save.
-        output_dir (str): directory to save the data in.
-        base_filename (str): the name of file to save data to.
+        filepath (str): filepath to save the data to.
     """
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_path = os.path.join(output_dir, f"{base_filename}_{timestamp}.json")
+    filepath = f"{filepath}_{timestamp}.json"
+
+    logger.info(f"Dumping {len(data):,} rows of data to {filepath}")
     try:
-        with open(file_path, "w") as f:
+        with open(filepath, "w") as f:
             json.dump(data, f)
-        logger.info(f"Saved API response to {file_path}")
+        logger.info(f"Successfully dumped API response to {filepath}")
     except Exception as e:
-        logger.error(f"Failed to save file: {e}")
+        logger.error(f"Failed to dump file: {e}")
 
 # ───────────────────────────────
 # Insert data to DB
