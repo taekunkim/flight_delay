@@ -40,7 +40,7 @@ request_headers = {
     # before_sleep=logger,  # Log each retry attempt
     # after=logger.info("Retry attempt complete.")  # Optional hook
 )
-def get_flight_arrival_data(
+def get_flight_delay_data(
         flight_code: str,
         datetime_from: str,
         datetime_to: str,
@@ -97,7 +97,7 @@ def get_flight_arrival_data(
         logger.info(f"Fetching data from {request_params['url']}")
         response = requests.get(**request_params)
         response.raise_for_status()
-        raw_data = response.json()
+        raw_data = response.json()["data"]
         logger.info(f"Finished fetching {len(raw_data):,} records of data.")
     
     except requests.RequestException as e:
@@ -109,7 +109,9 @@ def get_flight_arrival_data(
     # ───────────────────────────────
 
     if DUMP_RAW_DATA:
-        dump_filepath = urljoin(os.getenv("OUTPUT_DIR"), "flight_data", dump_file_name)
+        OUTPUT_DIR = os.getenv("OUTPUT_DIR")
+        ARRIVAL_API_RAW_DUMP_FILE_NAME = os.getenv("ARRIVAL_API_RAW_DUMP_FILE_NAME")
+        dump_filepath = f"{OUTPUT_DIR}{ARRIVAL_API_RAW_DUMP_FILE_NAME}"
         dump_data(raw_data, dump_filepath)
 
     return raw_data

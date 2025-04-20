@@ -7,14 +7,16 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from src.db.database import Base
+from src.db.models import *
+
 # Load env variables
 load_dotenv(dotenv_path="config/.env")
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-db_url = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
-# db_url = "postgresql://flightuser:secret@postgres:5432/flight_data"
+db_url = os.getenv("DATABASE_URL")
 
 config.set_main_option("sqlalchemy.url", db_url)
 
@@ -28,7 +30,6 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from src.db.models.flight_arrivals import Base
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
