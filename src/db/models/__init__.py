@@ -1,4 +1,7 @@
-from .flight_arrivals import FlightArrival
-from .flight_arrivals import Base  # ✅ the shared Base used by all models
+from src.db.database import Base
+from .flight_delay import FlightDelay
 
-__all__ = ["FlightArrival", "Base"]
+__all__ = [
+    "Base", 
+    "FlightDelay"
+]
