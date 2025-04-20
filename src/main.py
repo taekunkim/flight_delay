@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from src.utils.logger import logger
 from src.utils.helper import insert_data_to_db
 from src.db.models.flight_arrivals import FlightArrival
-from src.etl.extract.aviation_edge import get_flight_arrival_data
+from src.etl.extract.flight_data import get_flight_arrival_data
 
 # ───────────────────────────────
 # Logging Configuration
@@ -22,11 +22,10 @@ API_BASE_URL = os.getenv("API_BASE_URL")
 ARRIVAL_API_ENDPOINT = os.getenv("ARRIVAL_API_ENDPOINT")
 API_KEY = os.getenv("API_KEY")
 
-ARRIVAL_AIRPORT = os.getenv("ARRIVAL_AIRPORT") 
-AIRLINE_CODE = os.getenv("AIRLINE_CODE")
-FLIGHT_NUMBER = os.getenv("FLIGHT_NUMBER")
-DATE_FROM = os.getenv("DATE_FROM") 
-DATE_TO = os.getenv("DATE_TO") 
+
+ARRIVAL_API_FLIGHT_CODE = os.getenv("ARRIVAL_API_FLIGHT_CODE")
+ARRIVAL_API_FLIGHT_DATETIME_FROM = os.getenv("ARRIVAL_API_FLIGHT_DATETIME_FROM")
+ARRIVAL_API_FLIGHT_DATETIME_TO = os.getenv("ARRIVAL_API_FLIGHT_DATETIME_TO")
 ARRIVAL_API_FILE_NAME = os.getenv("ARRIVAL_API_FILE_NAME") 
 
 # ───────────────────────────────
@@ -39,7 +38,8 @@ def main():
     # Fetch API Data
     # ───────────────────────────────
     logger.info("Fetching Flight Arrival data via API...")
-    arrival_data = get_flight_arrival_data(API_KEY, ARRIVAL_AIRPORT, AIRLINE_CODE, FLIGHT_NUMBER, DATE_FROM, DATE_TO)
+
+    arrival_data = get_flight_arrival_data(ARRIVAL_API_FLIGHT_CODE, ARRIVAL_API_FLIGHT_DATETIME_FROM,  ARRIVAL_API_FLIGHT_DATETIME_TO, ARRIVAL_API_FILE_NAME)
     logger.info("Finished fetching Flight Arrival data via API.")
 
     # insert data to db
