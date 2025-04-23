@@ -26,16 +26,32 @@ alembic_history:
 
 # Run tests inside container
 test:
-	docker-compose exec python_data pytest
+	docker compose exec python_data pytest
 
 # Run the main script
 run:
-	docker-compose exec python_data python main.py
+	docker compose exec python_data python main.py
 
 # Start containers
-up:
-	docker-compose up -d
+docker-up:
+	docker compose up -d
+
+docker-airflow-up:
+	docker compose -f docker-compose.airflow.yml up -d
 
 # Stop and remove containers
-down:
-	docker-compose down
+docker-down:
+	docker compose down
+
+docker-airflow-down:
+	docker compose -f airflow/docker-compose.airflow.yml down
+
+init-airflow:
+	docker compose -f airflow/docker-compose.airflow.yml run --rm webserver airflow db init
+	docker compose -f airflow/docker-compose.airflow.yml run --rm webserver airflow users create \
+		--username airflow \
+		--password airflow \
+		--firstname Air \
+		--lastname Flow \
+		--role Admin \
+		--email airflow@example.com
