@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, TIMESTAMP, PrimaryKeyConstraint
 from sqlalchemy.sql import func
-from src.db.database import Base
+from db.database import Base
 
 class FlightDelay(Base):
     __tablename__ = "flight_delay"

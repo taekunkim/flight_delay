@@ -1,5 +1,20 @@
+docker-build:
+	docker compose build  --no-cache
+
+# Start containers
+docker-up:
+	docker compose up -d
+
+# Stop and remove containers
+docker-down:
+	docker compose down
+
+# run through the entire ETL scripts
+data:
+	docker compose exec python_data python main.py
+
 # Set the alembic base command with custom config path
-alembic_cmd = docker-compose exec python_data alembic -c db/alembic.ini
+alembic_cmd = docker-compose exec python_data alembic -c ./db/alembic.ini
 
 # Run migrations (upgrades the DB to latest schema)
 alembic_migrate:
@@ -24,18 +39,8 @@ alembic_current:
 alembic_history:
 	$(alembic_cmd) history
 
-# Run tests inside container
-test:
-	docker-compose exec python_data pytest
 
-# Run the main script
-run:
-	docker-compose exec python_data python main.py
 
-# Start containers
-up:
-	docker-compose up -d
 
-# Stop and remove containers
-down:
-	docker-compose down
+
+

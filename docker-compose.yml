@@ -1,27 +1,26 @@
 services:
 
   python_data:
+    container_name: python_data
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .:/usr/src/app
       - ./src:/usr/src/app/src # Mounts the src folder in ROOT to container dir; enabling Python to run src stored outside of the container
-      - ./config/requirements.txt:/usr/src/app/requirements.txt # Mounts the requirements.txt file in ROOT to container dir; enabling Python to pip install
       - ./data:/usr/src/app/output # Mounts the data folder in ROOT to container dir; enabling Python to save output outside of the container
       - ./tests:/usr/src/app/tests
     env_file:
       - ./config/.env
     working_dir: /usr/src/app/src # dir within the container, in which Python will be running
     environment:
-      - PYTHONPATH=/usr/src/app
+      - PYTHONPATH=/usr/src/app/src # filepath to search when compiling `import ... from ...`
     command: >
-      sh -c "pip install --no-cache-dir -r ../requirements.txt && sleep infinity"   
+      sh -c "sleep infinity"    
     # python extract_flight_arrival_data.py" # terminal command to run when starting the container
 
-  postgres:
+  etl_db:
     image: postgres:15
-    container_name: flight_pg
+    container_name: etl_db
     restart: always
     ports:
       - "5432:5432"

@@ -10,6 +10,6 @@ Base = declarative_base()
 
 # Optional: setup engine using environment variables (or config)
 # This is used for direct script access (not needed if only Alembic handles connections)
-DB_URL = os.getenv("DATABASE_URL")  # e.g., postgresql://user:pass@host:5432/dbname
+DB_URL = os.getenv("APP_DB_URL")  # e.g., postgresql://user:pass@host:5432/dbname
 engine = create_engine(DB_URL) if DB_URL else None
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine) if engine else None

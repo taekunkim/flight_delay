@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from src.etl.extract.get_flight_arrival_data import get_flight_arrival_data
+from etl.extract.get_flight_arrival_data import get_flight_arrival_data
 
 # Sample API response based on the user's data
 sample_response = [

@@ -1,11 +1,11 @@
 import os
 import requests
 
-from src.utils.logger import logger
-from src.utils.helper import dump_data
+from utils.logger import logger
+from utils.helper import dump_data
 
 from datetime import datetime
-from dotenv import load_dotenv
+
 from urllib.parse import urljoin, urlencode
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
 
@@ -17,7 +17,7 @@ logger = logger
 # ───────────────────────────────
 # Load .env config
 # ───────────────────────────────
-load_dotenv()
+
 
 API_KEY = os.getenv("FLIGHT_API_KEY")
 API_BASE_URL = os.getenv("FLIGHT_API_BASE_URL")
