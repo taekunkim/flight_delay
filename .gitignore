@@ -2,8 +2,9 @@ reminder.md
 resources
 data
 venv
-.env
+config/.env
 __pycache__
 .pytest_cache
 notebooks
 scripts/alembic/*
+src/db/alembic/versions/*

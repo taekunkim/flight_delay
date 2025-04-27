@@ -1,16 +1,15 @@
 import os
 import requests
 
-from src.utils.logger import logger
-from src.utils.helper import dump_data
+from utils.logger import logger
+from utils.helper import dump_data
 from sqlalchemy.inspection import inspect
 
 from datetime import datetime, timezone
-from dotenv import load_dotenv
-from src.utils.helper import dump_data
+
 
 logger = logger
-load_dotenv()
+
 
 # ───────────────────────────────
 # Fomat data
@@ -23,7 +22,7 @@ def clean_flight_arrivals_data(
     """
 
     """
-    from src.db.models.flight_delay import FlightDelay
+    from db.models.flight_delay import FlightDelay
     pk_cols = [pk.name for pk in inspect(FlightDelay).primary_key]
 
     clean_data = []

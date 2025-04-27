@@ -3,8 +3,8 @@ from pathlib import Path
 from datetime import datetime 
 from sqlalchemy.orm import Session
 
-from src.utils.logger import logger
-from src.utils.db import SessionLocal, engine
+from utils.logger import logger
+from utils.db import SessionLocal, engine
 
 # ───────────────────────────────
 # Logging Configuration
