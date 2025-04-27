@@ -38,9 +38,3 @@ alembic_current:
 # Show full migration history
 alembic_history:
 	$(alembic_cmd) history
-
-
-
-
-
-
