@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-data
+  template:
+    metadata:
+      labels:
+        app: python-data
+    spec:
+      containers:
+      - name: python-data
+        image: taekunkim/flight-delays-etl:latest
+        envFrom:
+        - secretRef:
+            name: etl-secret
+        - configMapRef:
+            name: etl-config
+        env:
+        - name: PYTHONPATH
+          value: "/usr/src/app/src"
+        command: ["sleep", "infinity"]

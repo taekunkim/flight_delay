@@ -9,16 +9,6 @@ from datetime import datetime
 from urllib.parse import urljoin, urlencode
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
 
-# ───────────────────────────────
-# Logging Configuration
-# ───────────────────────────────
-logger = logger
-
-# ───────────────────────────────
-# Load .env config
-# ───────────────────────────────
-
-
 API_KEY = os.getenv("FLIGHT_API_KEY")
 API_BASE_URL = os.getenv("FLIGHT_API_BASE_URL")
 DUMP_RAW_DATA = os.getenv("DUMP_RAW_DATA")

@@ -11,14 +11,6 @@ from etl.extract.flight_data import get_flight_delay_data
 from etl.transform.flight_data import clean_flight_arrivals_data
 
 
-# ───────────────────────────────
-# Logging Configuration
-# ───────────────────────────────
-logger = logger
-
-# ───────────────────────────────
-# Load .env config
-# ───────────────────────────────
 
 OUTPUT_DIR = os.getenv("OUTPUT_DIR")
 API_BASE_URL = os.getenv("API_BASE_URL")
@@ -44,17 +36,12 @@ def main():
     # ───────────────────────────────
     logger.info("Extracting flight delay data via API...")
 
-    # delay_data_raw = get_flight_delay_data(ARRIVAL_API_FLIGHT_CODE, ARRIVAL_API_FLIGHT_DATETIME_FROM,  ARRIVAL_API_FLIGHT_DATETIME_TO, ARRIVAL_API_RAW_DUMP_FILE_NAME)
-    # logger.info("Finished extracting Flight Arrival data via API.")
+    delay_data_raw = get_flight_delay_data(ARRIVAL_API_FLIGHT_CODE, ARRIVAL_API_FLIGHT_DATETIME_FROM,  ARRIVAL_API_FLIGHT_DATETIME_TO, ARRIVAL_API_RAW_DUMP_FILE_NAME)
+    logger.info("Finished extracting Flight Arrival data via API.")
 
-    # logger.info("Transforming flight delay data...")
-    # delay_data_clean = clean_flight_arrivals_data(delay_data_raw, ARRIVAL_API_CLEAN_DUMP_FILE_NAME)
-    # logger.info("Finished transforming flight delay data...")
-
-    from pathlib import Path
-    import json
-    with Path("../output/flight_data/flight_delay_clean.json").open("r", encoding="utf-8") as f:
-        delay_data_clean = json.load(f)
+    logger.info("Transforming flight delay data...")
+    delay_data_clean = clean_flight_arrivals_data(delay_data_raw, ARRIVAL_API_CLEAN_DUMP_FILE_NAME)
+    logger.info("Finished transforming flight delay data...")
 
     # insert data to db
     logger.info("Loading flight delay data to db...")
