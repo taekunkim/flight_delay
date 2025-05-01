@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etl-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: etl-db
+  template:
+    metadata:
+      labels:
+        app: etl-db
+    spec:
+      containers:
+      - name: etl-db
+        image: postgres:15
+        envFrom:
+        - secretRef:
+            name: etl-secret
+        - configMapRef:
+            name: etl-config
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-storage
+        emptyDir: {}
+      

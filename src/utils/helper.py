@@ -7,11 +7,6 @@ from utils.logger import logger
 from utils.db import SessionLocal, engine
 
 # ───────────────────────────────
-# Logging Configuration
-# ───────────────────────────────
-logger = logger
-
-# ───────────────────────────────
 # Save JSON Output
 # ───────────────────────────────
 def dump_data(data: dict, filepath: str) -> None:
