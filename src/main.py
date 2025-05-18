@@ -11,8 +11,6 @@ from etl.extract.flight_data import get_flight_delay_data
 from etl.transform.flight_data import clean_flight_arrivals_data
 
 
-
-OUTPUT_DIR = os.getenv("OUTPUT_DIR")
 API_BASE_URL = os.getenv("API_BASE_URL")
 ARRIVAL_API_ENDPOINT = os.getenv("ARRIVAL_API_ENDPOINT")
 API_KEY = os.getenv("API_KEY")
@@ -21,8 +19,8 @@ API_KEY = os.getenv("API_KEY")
 ARRIVAL_API_FLIGHT_CODE = os.getenv("ARRIVAL_API_FLIGHT_CODE")
 ARRIVAL_API_FLIGHT_DATETIME_FROM = os.getenv("ARRIVAL_API_FLIGHT_DATETIME_FROM")
 ARRIVAL_API_FLIGHT_DATETIME_TO = os.getenv("ARRIVAL_API_FLIGHT_DATETIME_TO")
-ARRIVAL_API_RAW_DUMP_FILE_NAME = os.getenv("ARRIVAL_API_RAW_DUMP_FILE_NAME") 
-ARRIVAL_API_CLEAN_DUMP_FILE_NAME = os.getenv("ARRIVAL_API_CLEAN_DUMP_FILE_NAME") 
+ARRIVAL_API_RAW_DUMP_FILEPATH = os.getenv("ARRIVAL_API_RAW_DUMP_FILEPATH") 
+ARRIVAL_API_CLEAN_DUMP_FILEPATH = os.getenv("ARRIVAL_API_CLEAN_DUMP_FILEPATH") 
 
 
 # ───────────────────────────────
@@ -36,11 +34,11 @@ def main():
     # ───────────────────────────────
     logger.info("Extracting flight delay data via API...")
 
-    delay_data_raw = get_flight_delay_data(ARRIVAL_API_FLIGHT_CODE, ARRIVAL_API_FLIGHT_DATETIME_FROM,  ARRIVAL_API_FLIGHT_DATETIME_TO, ARRIVAL_API_RAW_DUMP_FILE_NAME)
+    delay_data_raw = get_flight_delay_data(ARRIVAL_API_FLIGHT_CODE, ARRIVAL_API_FLIGHT_DATETIME_FROM,  ARRIVAL_API_FLIGHT_DATETIME_TO, ARRIVAL_API_RAW_DUMP_FILEPATH)
     logger.info("Finished extracting Flight Arrival data via API.")
 
     logger.info("Transforming flight delay data...")
-    delay_data_clean = clean_flight_arrivals_data(delay_data_raw, ARRIVAL_API_CLEAN_DUMP_FILE_NAME)
+    delay_data_clean = clean_flight_arrivals_data(delay_data_raw, ARRIVAL_API_CLEAN_DUMP_FILEPATH)
     logger.info("Finished transforming flight delay data...")
 
     # insert data to db

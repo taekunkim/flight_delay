@@ -1,6 +1,7 @@
+import os
+import csv
 import json
 from pathlib import Path
-from datetime import datetime 
 from sqlalchemy.orm import Session
 
 from utils.logger import logger
@@ -18,6 +19,9 @@ def dump_data(data: dict, filepath: str) -> None:
         filepath (str): filepath to save the data to.
     """
     logger.info(f"Dumping {len(data):,} rows of data to {filepath}")
+
+    OUTPUT_DIR = os.getenv("OUTPUT_DIR")
+    filepath = f"{OUTPUT_DIR}{filepath}"
     try:
         # Create the directory if it doesn't exist
         filedir = Path(filepath).parent
@@ -25,9 +29,33 @@ def dump_data(data: dict, filepath: str) -> None:
         
         with open(filepath, "w") as f:
             json.dump(data, f)
-        logger.info(f"Successfully dumped API response to {filepath}")
+        logger.info(f"Successfully dumped data to {filepath}")
     except Exception as e:
         logger.error(f"Failed to dump file: {e}")
+
+# ───────────────────────────────
+# Save JSON Output
+# ───────────────────────────────
+def read_data(filepath: str) -> None:
+    """
+    reads json/dict data from local file.
+
+    Args:
+        filepath (str): filepath to read the data from.
+    """
+    logger.info(f"Loading local data from {filepath}")
+
+    OUTPUT_DIR = os.getenv("OUTPUT_DIR")
+    filepath = f"{OUTPUT_DIR}{filepath}"
+    try:
+        with open(filepath, 'r') as file:
+            data = json.load(file)
+        logger.info(f"Successfully loaded local data from {filepath}")
+    except Exception as e:
+        logger.error(f"Failed to load file: {e}")
+        raise e
+    
+    return data
 
 # ───────────────────────────────
 # Insert data to DB
