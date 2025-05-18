@@ -1,15 +1,12 @@
 import os
-import requests
 
 from utils.logger import logger
-from utils.helper import dump_data
+from utils.helper import read_data, dump_data
 from sqlalchemy.inspection import inspect
 
 from datetime import datetime, timezone
 
-
 logger = logger
-
 
 # ───────────────────────────────
 # Fomat data
@@ -17,7 +14,7 @@ logger = logger
 
 def clean_flight_arrivals_data(
         raw_data: list[dict], 
-        dump_filename: str=None
+        dump_filepath: str=None
     ) -> list[dict]:
     """
 
@@ -46,36 +43,22 @@ def clean_flight_arrivals_data(
     # Dump raw data
     # ───────────────────────────────
     DUMP_CLEAN_DATA = os.getenv("DUMP_CLEAN_DATA")
+    
     if DUMP_CLEAN_DATA:
-        OUTPUT_DIR = os.getenv("OUTPUT_DIR")
-        ARRIVAL_API_CLEAN_DUMP_FILE_NAME = os.getenv("ARRIVAL_API_CLEAN_DUMP_FILE_NAME")
-        dump_filepath = f"{OUTPUT_DIR}{ARRIVAL_API_CLEAN_DUMP_FILE_NAME}"
         dump_data(clean_data, dump_filepath)
 
     return clean_data
     
-# ───────────────────────────────
-# Prepare data for SQLAlchemy
-# ───────────────────────────────
-        
-    # logger.info("Transforming data for SQLAlchemy")
+def main():
+    ARRIVAL_API_RAW_DUMP_FILEPATH = os.getenv("ARRIVAL_API_RAW_DUMP_FILEPATH") 
+    ARRIVAL_API_CLEAN_DUMP_FILEPATH = os.getenv("ARRIVAL_API_CLEAN_DUMP_FILEPATH") 
 
-    # clean_data = []
-    # skip_counter = 0 # number of records skipped while parsing
-    # for each in raw_data:
-    #     try:
-    #         clean_each = {
-    #             "airline_iata_code": each.get("airline").get("iataCode"),
-    #             "flight_number": each.get("flight").get("number"),
-    #             "scheduled_arrival": datetime.fromisoformat(each.get("arrival").get("scheduledTime").replace("t", "T")),
-    #             "actual_arrival": datetime.fromisoformat(each.get("arrival").get("actualTime").replace("t", "T")),
-    #             "departure_delay": each.get("departure").get("delay"),
-    #         }
-    #         clean_data.append(clean_each)
+    data = read_data(ARRIVAL_API_RAW_DUMP_FILEPATH)
 
-    #     except Exception as e:
-    #         skip_counter += 1
-        
-    # logger.warning(f"Skipped parsing {skip_counter} records due to invalid data.")
-
-    # logger.info("Finished transforming data for SQLAlchemy")
+    clean_flight_arrivals_data(
+        data,
+        ARRIVAL_API_CLEAN_DUMP_FILEPATH
+    )
+    
+if __name__ == "__main__":
+    main()

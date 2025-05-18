@@ -4,8 +4,6 @@ import requests
 from utils.logger import logger
 from utils.helper import dump_data
 
-from datetime import datetime
-
 from urllib.parse import urljoin, urlencode
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
 
@@ -34,7 +32,7 @@ def get_flight_delay_data(
         flight_code: str,
         datetime_from: str,
         datetime_to: str,
-        dump_file_name: str
+        dump_filepath: str
     ) -> list[dict]:
     """
     Via API, fetches arrival flight data for a given airport, airline, and flight number.
@@ -99,10 +97,22 @@ def get_flight_delay_data(
     # ───────────────────────────────
 
     if DUMP_RAW_DATA:
-        OUTPUT_DIR = os.getenv("OUTPUT_DIR")
-        ARRIVAL_API_RAW_DUMP_FILE_NAME = os.getenv("ARRIVAL_API_RAW_DUMP_FILE_NAME")
-        dump_filepath = f"{OUTPUT_DIR}{ARRIVAL_API_RAW_DUMP_FILE_NAME}"
         dump_data(raw_data, dump_filepath)
 
     return raw_data
+
+def main():
+    ARRIVAL_API_FLIGHT_CODE = os.getenv("ARRIVAL_API_FLIGHT_CODE")
+    ARRIVAL_API_FLIGHT_DATETIME_FROM = os.getenv("ARRIVAL_API_FLIGHT_DATETIME_FROM")
+    ARRIVAL_API_FLIGHT_DATETIME_TO = os.getenv("ARRIVAL_API_FLIGHT_DATETIME_TO")
+    ARRIVAL_API_RAW_DUMP_FILEPATH = os.getenv("ARRIVAL_API_RAW_DUMP_FILEPATH") 
+
+    get_flight_delay_data(
+        ARRIVAL_API_FLIGHT_CODE,
+        ARRIVAL_API_FLIGHT_DATETIME_FROM,
+        ARRIVAL_API_FLIGHT_DATETIME_TO,
+        ARRIVAL_API_RAW_DUMP_FILEPATH
+    )
     
+if __name__ == "__main__":
+    main()

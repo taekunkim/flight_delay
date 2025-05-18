@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: python-data
-        image: taekunkim/flight-delays-etl:latest
+        image: flight-delays-etl:dev
+        imagePullPolicy: Never
         envFrom:
         - secretRef:
             name: etl-secret
