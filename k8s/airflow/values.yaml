@@ -1,0 +1,29 @@
+airflowVersion: "2.10.5"
+
+images:
+  airflow:
+    # repository: apache/airflow # Default is fine
+    tag: "2.10.5-python3.12" # Assuming this is the image we've seen working in templates
+    # pullPolicy: IfNotPresent
+
+# Ensure these job blocks are either ABSENT (to truly rely on chart defaults if enabled by default)
+# OR explicitly enabled as per the chart's specific values.yaml for 1.16.0 if defaults aren't working
+migrateDatabaseJob:
+  enabled: true # This was your last setting, which is a good explicit choice
+  # useHelmHooks: true # Default for chart 1.16.0, can be omitted
+  # applyCustomEnv: true # Default for chart 1.16.0, can be omitted
+
+# createUserJob: # Usually enabled by default if bootstrapUser is enabled.
+#   enabled: true # Or omit this whole block if bootstrapUser.enabled handles it
+#   useHelmHooks: true
+#   applyCustomEnv: true
+
+executor: KubernetesExecutor
+
+# Remove or comment out kubernetes.workerContainerTag if you're using the global images.airflow.tag
+# kubernetes:
+#   workerContainerRepository: "apache/airflow"
+#   workerContainerTag: "2.10.5-python3.12" # Align with global tag
+
+# ... rest of your essential settings (webserver, scheduler, dags, logs, postgresql, bootstrapUser)
+# Ensure logs.persistence.storageClassName is "hostpath" if that's what you have.
